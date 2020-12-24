@@ -162,3 +162,18 @@ def test_index_js_to_enriched_function_blocks():
                                                                link='cats/data/Binested.html#productElementNames:Iterator[String]',
                                                                kind='def'))]
         assert actual == expected
+
+
+def test_encode_enriched_function_block_converts_to_string_json():
+    test_efb = EnrichedFunctionBlock(package_name='cats.data', file_name='cats.data.Binested',
+                                     short_description='Compose a two-slot type constructor F[_, _] with two single-slot type constructors G[_] and H[_], resulting in a two-slot type constructor with respect to the inner types.',
+                                     kind='case class', case_class_link='cats/data/Binested.html', class_link=None,
+                                     object_link='cats/data/Binested$.html', trait_link=None,
+                                     function_block=FunctionBlock(label='productElementNames',
+                                                                  tail='(): Iterator[String]',
+                                                                  member='scala.Product.productElementNames',
+                                                                  link='cats/data/Binested.html#productElementNames:Iterator[String]',
+                                                                  kind='def'))
+    actual = encode_enriched_function_block(test_efb)
+    expected = """{"package_name":"cats.data","file_name":"cats.data.Binested","short_description":"Compose a two-slot type constructor F[_, _] with two single-slot type constructors G[_] and H[_], resulting in a two-slot type constructor with respect to the inner types.","kind":"case class","case_class_link":"cats/data/Binested.html","class_link":null,"object_link":"cats/data/Binested$.html","trait_link":null,"function_block":{"label":"productElementNames","tail":"(): Iterator[String]","member":"scala.Product.productElementNames","link":"cats/data/Binested.html#productElementNames:Iterator[String]","kind":"def"}}"""
+    assert actual == expected

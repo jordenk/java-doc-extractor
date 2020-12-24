@@ -5,7 +5,7 @@
 import sys
 import json
 from typing import Dict, List
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 FUNCTION_BLOCK_KEYS = {'members_object', 'members_trait', 'members_class', 'members_case class'}
 
@@ -115,3 +115,7 @@ def build_function_block(block: Dict) -> FunctionBlock:
         # ErrorBlocks unhandled- not needed right now. These contain keys ('member', 'error'). There
         # may be other blocks to handle in the future, but the bulk of the blocks are function blocks.
         pass
+
+
+def encode_enriched_function_block(efb: EnrichedFunctionBlock) -> str:
+    return json.dumps(asdict(efb), separators=(',', ':'))

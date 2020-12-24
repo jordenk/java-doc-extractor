@@ -48,3 +48,6 @@ MANIFEST
 
 # Per-project virtualenvs
 .venv*/
+
+# Local Dev Files
+tests/resources/cats_index.js
