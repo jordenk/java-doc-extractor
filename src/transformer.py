@@ -1,5 +1,7 @@
 """
-
+The transformer reads the index.js file in a java doc folder and transform it into json representing Scala functions.
+Minimal keys are renamed, and no json values are altered. The transformer goal is to standardize the output without
+mutating values.
 """
 
 import sys
@@ -42,6 +44,9 @@ class EnrichedFunctionBlock:
 
 
 def trim_index_js(raw_index_js: str) -> str:
+    """
+    Helper function to convert an index.js string into parsable JSON.
+    """
     stripped = raw_index_js.strip()
     arr = stripped.split("Index.PACKAGES = ")
     if len(arr) > 2:
@@ -55,6 +60,9 @@ def trim_index_js(raw_index_js: str) -> str:
 
 
 def index_js_to_enriched_function_blocks(index_js: str) -> List[EnrichedFunctionBlock]:
+    """
+    Main function of the file. Converts raw index.js file into the output dataclass.
+    """
     trimmed_index_js = trim_index_js(index_js)
     index_json = json.loads(trimmed_index_js)
 
@@ -67,6 +75,9 @@ def index_js_to_enriched_function_blocks(index_js: str) -> List[EnrichedFunction
 
 
 def extract_enriched_function_blocks(package_name: str, scala_type: Dict) -> List[EnrichedFunctionBlock]:
+    """
+    Iterates through nested function blocks. Produces function blocks enriched with data from the parent block.
+    """
     rtn_blocks = []
     for k, v in scala_type.items():
         if type(v) is list:
@@ -80,6 +91,9 @@ def extract_enriched_function_blocks(package_name: str, scala_type: Dict) -> Lis
 
 
 def _enrich_function_blocks(package_name: str, meta_data: Dict, fn_blocks: List[Dict]) -> List[EnrichedFunctionBlock]:
+    """
+    Helper function. Build an enriched function block.
+    """
     kind = meta_data.get('kind')
 
     if kind not in {"case class", "class", "object", "trait"}:
@@ -103,6 +117,9 @@ def _enrich_function_blocks(package_name: str, meta_data: Dict, fn_blocks: List[
 
 
 def build_function_block(block: Dict) -> FunctionBlock:
+    """
+    Helper function. Build a function block.
+    """
     if set(block.keys()) == set(FunctionBlock.__annotations__.keys()):
         return FunctionBlock(
             label=block.get('label'),
@@ -118,4 +135,7 @@ def build_function_block(block: Dict) -> FunctionBlock:
 
 
 def encode_enriched_function_block(efb: EnrichedFunctionBlock) -> str:
+    """
+    Encodes an EnrichedFunctionBlock as a JSON string.
+    """
     return json.dumps(asdict(efb), separators=(',', ':'))
