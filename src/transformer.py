@@ -32,7 +32,9 @@ class EnrichedFunctionBlock:
     This is a denormalized view of the data to make downstream indexing easier. This dataclass will be sparse with
     regard to the the _link fields.
     """
+    # TODO use this to join
     package_name: str
+    # TODO Need to use this to join
     file_name: str
     short_description: str
     kind: str
