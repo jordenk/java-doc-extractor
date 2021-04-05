@@ -3,11 +3,10 @@ The transformer reads the index.js file in a java doc folder and transform it in
 Minimal keys are renamed, and no json values are altered. The transformer goal is to standardize the output without
 mutating values.
 """
-
-import sys
 import json
-from typing import Dict, List
+import sys
 from dataclasses import dataclass, asdict
+from typing import Dict, List
 
 FUNCTION_BLOCK_KEYS = {'members_object', 'members_trait', 'members_class', 'members_case class'}
 

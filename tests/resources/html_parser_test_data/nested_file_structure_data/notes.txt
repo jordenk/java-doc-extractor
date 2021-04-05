@@ -1,0 +1,1 @@
+This file should be ignored when collecting html files. This directory is used for a unit test.
